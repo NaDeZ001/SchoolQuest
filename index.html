@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>SchoolQuest</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.1);
+      padding: 20px;
+      border-radius: 20px;
+      max-width: 400px;
+      margin: auto;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    button {
+      padding: 12px 18px;
+      margin: 8px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .easy { background: #4CAF50; }
+    .medium { background: #ff9800; }
+    .hard { background: #f44336; }
+
+    .vote { font-size: 20px; }
+
+    #quest {
+      font-size: 20px;
+      margin: 20px 0;
+    }
+
+    #timerBar {
+      height: 10px;
+      background: #00ffcc;
+      border-radius: 5px;
+      transition: width 1s linear;
+    }
+
+    .barContainer {
+      background: rgba(255,255,255,0.2);
+      border-radius: 5px;
+      overflow: hidden;
+      margin: 10px 0;
+    }
+
+    #coins {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h1>🎮 SchoolQuest</h1>
+
+  <p>Wähle Schwierigkeit:</p>
+  <button class="easy" onclick="startGame('easy')">Easy</button>
+  <button class="medium" onclick="startGame('medium')">Medium</button>
+  <button class="hard" onclick="startGame('hard')">Hard</button>
+
+  <div id="quest">Noch keine Quest</div>
+
+  <div class="barContainer">
+    <div id="timerBar" style="width:100%"></div>
+  </div>
+  <div id="timerText"></div>
+
+  <div>
+    <button class="vote" onclick="vote(true)">👍</button>
+    <button class="vote" onclick="vote(false)">👎</button>
+  </div>
+
+  <div id="coins">Coins: 0</div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
