@@ -1,18 +1,18 @@
 const quests = {
   easy: [
-    "Klatsche 10x leise",
-    "Tippe 5x schnell auf den Tisch",
+    "Tippe 10 Sekunden lang heimlich einen Beat auf den Tisch",
+    "Schau jemanden an ohne zu lachen",
     "Flüstere deinen Namen rückwärts"
   ],
   medium: [
-    "Balanciere 15 Sekunden auf einem Bein",
-    "Tu so als wärst du ein Lehrer für 10 Sek",
-    "Schreibe deinen Namen mit der falschen Hand"
+    "Tu so als würdest du einschlafen",
+    "Schreibe ein Wort mit deiner falschen Hand",
+    "Starre 15 Sekunden an die Decke"
   ],
   hard: [
-    "Halte 30 Sekunden Plank (unauffällig 😄)",
-    "Mach 15 Squats leise",
-    "Starre 20 Sekunden ohne zu lachen"
+    "Mach 10 Squats so unauffällig wie möglich",
+    "Halte 20 Sekunden ein Pokerface egal was passiert",
+    "Tu so als würdest du eine unsichtbare Fliege fangen"
   ]
 };
 
@@ -35,20 +35,26 @@ function generateChoices() {
     const quest = random(quests[type]);
 
     const div = document.createElement("div");
-    div.className = "card " + type;
-    div.innerHTML = `<b>${type.toUpperCase()}</b><br>${quest}`;
+    div.className = "card";
+    div.innerText = quest;
 
-    div.onclick = () => selectQuest(type, quest);
+    div.onclick = () => selectQuest(div, type);
 
     cards.appendChild(div);
   });
 }
 
-function selectQuest(type, quest) {
+function selectQuest(element, type) {
+  if (selected) return;
+
   selected = type;
 
-  document.getElementById("selected").innerText =
-    "Deine Quest: " + quest;
+  document.querySelectorAll(".card").forEach(card => {
+    card.classList.add("locked");
+  });
+
+  element.classList.remove("locked");
+  element.classList.add("selected");
 
   startTimer();
 }
@@ -72,7 +78,7 @@ function startTimer() {
     if (time <= 0) {
       clearInterval(interval);
       document.getElementById("timer").innerText =
-        "Zeit vorbei! Jetzt voten 👇";
+        "Zeit vorbei – abstimmen!";
 
       document.getElementById("up").style.display = "inline-block";
       document.getElementById("down").style.display = "inline-block";
