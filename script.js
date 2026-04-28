@@ -1,67 +1,91 @@
 const quests = {
   easy: [
-    "5 Liegestütze",
-    "Spring 5x auf der Stelle",
-    "Klatsche 10x in die Hände"
+    "Klatsche 10x leise",
+    "Tippe 5x schnell auf den Tisch",
+    "Flüstere deinen Namen rückwärts"
   ],
   medium: [
-    "Sag das Alphabet rückwärts",
     "Balanciere 15 Sekunden auf einem Bein",
-    "Dreh dich 10x im Kreis"
+    "Tu so als wärst du ein Lehrer für 10 Sek",
+    "Schreibe deinen Namen mit der falschen Hand"
   ],
   hard: [
-    "Halte 30 Sekunden Plank",
-    "Mach 15 Squats schnell",
-    "Spring 20x ohne Pause"
+    "Halte 30 Sekunden Plank (unauffällig 😄)",
+    "Mach 15 Squats leise",
+    "Starre 20 Sekunden ohne zu lachen"
   ]
 };
 
 let coins = 0;
+let selected = null;
 let time = 30;
 let interval;
-let currentDifficulty = "";
 
-function getRandomQuest(type) {
-  const list = quests[type];
-  return list[Math.floor(Math.random() * list.length)];
+function random(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
 }
 
-function startGame(type) {
+function generateChoices() {
+  const cards = document.getElementById("cards");
+  cards.innerHTML = "";
+
+  const types = ["easy", "medium", "hard"];
+
+  types.forEach(type => {
+    const quest = random(quests[type]);
+
+    const div = document.createElement("div");
+    div.className = "card " + type;
+    div.innerHTML = `<b>${type.toUpperCase()}</b><br>${quest}`;
+
+    div.onclick = () => selectQuest(type, quest);
+
+    cards.appendChild(div);
+  });
+}
+
+function selectQuest(type, quest) {
+  selected = type;
+
+  document.getElementById("selected").innerText =
+    "Deine Quest: " + quest;
+
+  startTimer();
+}
+
+function startTimer() {
   clearInterval(interval);
-
-  currentDifficulty = type;
-  const quest = getRandomQuest(type);
-
-  document.getElementById("quest").innerText =
-    type.toUpperCase() + ": " + quest;
-
   time = 30;
+
+  document.getElementById("up").style.display = "none";
+  document.getElementById("down").style.display = "none";
 
   interval = setInterval(() => {
     time--;
 
-    document.getElementById("timerText").innerText =
+    document.getElementById("timer").innerText =
       time + " Sekunden";
 
-    document.getElementById("timerBar").style.width =
+    document.getElementById("bar").style.width =
       (time / 30 * 100) + "%";
 
     if (time <= 0) {
       clearInterval(interval);
-      document.getElementById("timerText").innerText =
-        "⏰ Zeit vorbei!";
+      document.getElementById("timer").innerText =
+        "Zeit vorbei! Jetzt voten 👇";
+
+      document.getElementById("up").style.display = "inline-block";
+      document.getElementById("down").style.display = "inline-block";
     }
   }, 1000);
 }
 
 function vote(up) {
-  if (!currentDifficulty) return;
-
   let reward = 0;
 
-  if (currentDifficulty === "easy") reward = 1;
-  if (currentDifficulty === "medium") reward = 2;
-  if (currentDifficulty === "hard") reward = 3;
+  if (selected === "easy") reward = 1;
+  if (selected === "medium") reward = 2;
+  if (selected === "hard") reward = 3;
 
   if (up) {
     coins += reward;
@@ -72,5 +96,8 @@ function vote(up) {
   document.getElementById("coins").innerText =
     "Coins: " + coins;
 
-  currentDifficulty = "";
+  selected = null;
+  generateChoices();
 }
+
+generateChoices();
